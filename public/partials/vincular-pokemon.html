@@ -1,0 +1,90 @@
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>CRUD com Bootstrap 3</title>
+
+ <link href="css/bootstrap.min.css" rel="stylesheet">
+ <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+   <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/equipe">Team Pokemon API</a>
+   </div>
+   <div id="navbar" class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-right">
+     <li><a href="/login">Logout</a></li>
+    </ul>
+   </div>
+  </div>
+ </nav>
+
+ <div id="main" class="container-fluid" style="margin-top: 50px">
+ 
+  <div id="top" class="row">
+    <div class="col-sm-3">
+      <h2>Pokemons</h2>
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group h2">
+        <span class="input-group-btn">
+          <a href="/equipe" class="btn btn-primary" type="button">
+            voltar
+          </a>
+        </span>
+        <input class="form-control" placeholder="filtrar pelo nome do pokemon" 
+          ng-model="filtro" ng-model-options="{ debounce: 500 }">        
+      </div>
+    </div>
+    <div class="col-md-12">
+      <h2>Equipe : {{equipe.nome}}</h2>
+    </div>
+  </div> <!-- /#top -->
+  <p ng-show="mensagem.length" class="alert alert-info">{{mensagem}}</p>
+  <div class="container-fluid">
+  <h2 class="page-header">Pokemons vinculados</h2>
+  <div class="row">
+    <div class="col-md-12 input-group" ng-repeat="pokemon in equipe.pokemons">
+      <li><strong>{{pokemon.nome}}</strong></li>
+      <span class="input-group-btn">
+        <a href="/vincularhabilidade/{{equipe.codigo}}_{{pokemon.codigo}}" class="btn btn-primary btn-xs">Vincular</a>
+        <!--<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-modal">Remover</button>-->
+        <button type="button" class="btn btn-danger btn-xs" ng-click="removerPokemon(pokemon)">Remover</button>
+      </span>                     
+    </div>    
+  </div>
+  <hr>
+  <div id="list" class="row">  
+  <div class="table-responsive col-md-12">
+    <table class="table table-striped" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>Nome pokemon</th>
+          <th class="actions">Ações</th>
+        </tr>
+      </thead>
+      <tbody dir-paginate="pokemon in pokemons | filter: filtro |itemsPerPage:5">
+        <tr>
+          <td>{{pokemon.name}}</td>
+          <td class="actions">
+            <button class="btn btn-warning btn-xs" ng-click="vincular(pokemon)">Vincular</button>
+          </td>
+        </tr>        
+      </tbody>
+    </table>
+    <dir-pagination-controls max-size="5" boundary-links="true"></dir-pagination-controls>
+  </div>
+   <hr>  
+</div>
+</body>
+</html>

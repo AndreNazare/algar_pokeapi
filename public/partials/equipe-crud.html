@@ -1,0 +1,76 @@
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>CRUD com Bootstrap 3</title>
+
+ <link href="css/bootstrap.min.css" rel="stylesheet">
+ <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+ <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+   <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/equipe">Team Pokemon API</a>
+   </div>
+   <div id="navbar" class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-right">
+     <li><a href="login">Logout</a></li>
+    </ul>
+   </div>
+  </div>
+ </nav>
+
+ <div id="main" class="container-fluid" style="margin-top: 50px">
+ <h3 class="page-header">Cadastro de equipes</h3>
+ <p ng-show="mensagem.length" class="alert alert-info">{{mensagem}}</p>
+ <form novalidate name="frmEquipe" ng-submit="submeter()">
+  <div class="row">
+     <div class="form-group col-md-12">
+        <label for="user">Usuario</label>
+        <select class="form-control" id="user" name="user" ng-model="nomeUser" required>
+          <option ng-repeat="usuario in usuarios">{{usuario.nome}}</option>          
+       </select>
+       <span ng-show="frmEquipe.$submitted && frmEquipe.nome.$error.required" class="form-control alert-danger">Usuário obrigatório
+       </span>
+       <label for="nome">Nome</label>
+       <input type="text" class="form-control" id="nome" name="nome" 
+              placeholder="Digite o nome do seu time de pokemon" 
+              ng-model="equipe.nome" required ng-maxlength="50">
+       <span ng-show="frmEquipe.$submitted && frmEquipe.nome.$error.required" class="form-control alert-danger">Nome obrigatório
+       </span>
+       <span ng-show="frmEquipe.$submitted && frmEquipe.nome.$error.maxlength" class="form-control alert-danger">Deve ter no máximo 50 caracteres
+       </span>
+     </div>     
+  </div>
+  <hr />
+  <div id="actions" class="row">
+    <div class="col-md-12">
+      <a href="/" class="btn btn-default">Voltar</a>
+      <button type="submit" class="btn btn-primary" ng-disabled="frmEquipe.$invalid">Salvar</button>      
+    </div>
+  </div>
+</form>
+<div class="container-fluid">
+  <h2 class="page-header">Equipes cadastradas</h2>
+  <div class="row">
+    <div class="col-md-12 input-group" ng-repeat="equipe in equipes | filter:{ usuario: { nome : nomeUser }}">
+      <p><strong>{{equipe.nome}}</strong></p>
+      <span class="input-group-btn">
+        <button class="btn btn-warning btn-xs" ng-click="editar(equipe)">Editar</button>
+        <a href="/vincularpokemon/{{equipe.codigo}}" class="btn btn-primary btn-xs">Vincular</a>
+        <button type="button" class="btn btn-danger btn-xs" ng-click="remover(equipe)">Remover</button>
+      </span>                     
+    </div>
+  </div>  
+</div>
+</body>
+</html>
